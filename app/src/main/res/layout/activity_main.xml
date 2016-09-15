@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.withhari.trafficfinesnepal.MainActivity">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="144dp"
+        android:contentDescription="@string/banner"
+        android:scaleType="centerCrop"
+        android:src="@drawable/img_traffic" />
+
+    <LinearLayout
+        android:id="@+id/titleBar"
+        android:layout_width="match_parent"
+        android:layout_height="144dp"
+        android:background="#bb373369"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/buttonContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_below="@+id/titleBar"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="-24dp"
+        android:background="@drawable/smooth_round"
+        android:minWidth="192dp">
+
+        <TextView
+            android:id="@+id/btnOne"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/smooth_round" />
+
+        <TextView
+            android:id="@+id/btnTwo"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/smooth_round" />
+
+        <TextView
+            android:id="@+id/btnThree"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/smooth_round" />
+
+        <TextView
+            android:id="@+id/btnFour"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/smooth_round" />
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/buttonContainer"
+        android:padding="16dp" />
+</RelativeLayout>
