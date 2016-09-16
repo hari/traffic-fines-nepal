@@ -20,12 +20,30 @@
         android:padding="16dp">
 
         <TextView
+            android:id="@+id/app_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/page_title"
+            android:layout_marginBottom="19dp"
+            android:text="@string/app_name"
+            android:textColor="#9fff"
+            android:textSize="22sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_above="@+id/page_title"
+            android:layout_marginBottom="9dp"
+            android:background="#9fff" />
+
+        <TextView
             android:id="@+id/page_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:textSize="24sp"
-            android:textStyle="bold" />
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/rel_margin"
+            android:textColor="#9fff"
+            android:textSize="24sp" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -47,7 +65,7 @@
             android:clickable="true"
             android:focusable="true"
             android:gravity="center"
-            android:textSize="12sp" />
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/btnTwo"
@@ -59,7 +77,7 @@
             android:clickable="true"
             android:focusable="true"
             android:gravity="center"
-            android:textSize="12sp" />
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/btnThree"
@@ -71,7 +89,7 @@
             android:clickable="true"
             android:focusable="true"
             android:gravity="center"
-            android:textSize="12sp" />
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/btnFour"
@@ -83,15 +101,15 @@
             android:clickable="true"
             android:focusable="true"
             android:gravity="center"
-            android:textSize="12sp" />
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/btnSelector"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:background="#cfff"
+            android:background="@drawable/selectable_round"
             android:gravity="center"
-            android:textSize="12sp" />
+            android:textSize="15sp" />
     </RelativeLayout>
 
     <ListView

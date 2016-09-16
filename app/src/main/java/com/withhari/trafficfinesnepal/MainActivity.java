@@ -33,10 +33,12 @@ public class MainActivity extends Activity implements View.OnClickListener {
         ListView mListView = (ListView) findViewById(R.id.list);
         mListView.setDivider(null);
 
-        TextView mTitle = (TextView) findViewById(R.id.page_title);
-        mTitle.setTypeface(Typeface.createFromAsset(getAssets(), "pretti.TTF"));
+        Typeface tf = Typeface.createFromAsset(getAssets(), "preeti.TTF");
 
-        TextView btnOne, btnTwo, btnThree, btnFour;
+        TextView mTitle = (TextView) findViewById(R.id.page_title);
+        mTitle.setTypeface(tf);
+
+        final TextView btnOne, btnTwo, btnThree, btnFour;
 
         btnOne = (TextView) findViewById(R.id.btnOne);
         btnTwo = (TextView) findViewById(R.id.btnTwo);
@@ -48,12 +50,18 @@ public class MainActivity extends Activity implements View.OnClickListener {
         btnFour.setOnClickListener(this);
         btnThree.setOnClickListener(this);
 
-        btnOne.setText(Html.fromHtml("<small>Rs</small><br />500"));
-        btnTwo.setText(Html.fromHtml("<small>Rs</small><br />1000"));
-        btnThree.setText(Html.fromHtml("<small>Rs</small><br />1500"));
-        btnFour.setText(Html.fromHtml("+"));
+        btnOne.setTypeface(tf);
+        btnTwo.setTypeface(tf);
+        btnFour.setTypeface(tf);
+        btnThree.setTypeface(tf);
+
+        btnOne.setText(Html.fromHtml("<small>?</small><br />%))"));
+        btnTwo.setText(Html.fromHtml("<small>?</small><br />!)))"));
+        btnThree.setText(Html.fromHtml("<small>?</small><br />!%))"));
+        btnFour.setText("cGo");
 
         btnSelect = (TextView) findViewById(R.id.btnSelector);
+        btnSelect.setTypeface(tf);
 
         GradientDrawable gdb = new GradientDrawable();
         gdb.setCornerRadius(72);
@@ -67,6 +75,22 @@ public class MainActivity extends Activity implements View.OnClickListener {
         showList("500.json");
         btnSelect.setText(btnOne.getText());
         select(0, btnOne);
+        if (Helper.isFirstRun(this)) {
+            Timer t = new Timer();
+            t.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Helper.setFirstRun(getApplicationContext(), false);
+                            showList("other.json");
+                            select(3, btnFour);
+                        }
+                    });
+                }
+            }, 1000);
+        }
     }
 
     private void showList(String name) {
