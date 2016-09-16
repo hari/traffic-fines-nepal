@@ -59,57 +59,41 @@
 
         <TextView
             android:id="@+id/btnOne"
+            style="@style/ButtonText"
             android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:background="@drawable/selectable_round"
-            android:clickable="true"
-            android:focusable="true"
-            android:gravity="center"
-            android:textSize="15sp" />
+            android:layout_height="48dp" />
 
         <TextView
             android:id="@+id/btnTwo"
+            style="@style/ButtonText"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_toEndOf="@+id/btnOne"
-            android:layout_toRightOf="@+id/btnOne"
-            android:background="@drawable/selectable_round"
-            android:clickable="true"
-            android:focusable="true"
-            android:gravity="center"
-            android:textSize="15sp" />
+            android:layout_toRightOf="@+id/btnOne" />
 
         <TextView
             android:id="@+id/btnThree"
+            style="@style/ButtonText"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_toEndOf="@+id/btnTwo"
-            android:layout_toRightOf="@+id/btnTwo"
-            android:background="@drawable/selectable_round"
-            android:clickable="true"
-            android:focusable="true"
-            android:gravity="center"
-            android:textSize="15sp" />
+            android:layout_toRightOf="@+id/btnTwo" />
 
         <TextView
             android:id="@+id/btnFour"
+            style="@style/ButtonText"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_toEndOf="@+id/btnThree"
-            android:layout_toRightOf="@+id/btnThree"
-            android:background="@drawable/selectable_round"
-            android:clickable="true"
-            android:focusable="true"
-            android:gravity="center"
-            android:textSize="15sp" />
+            android:layout_toRightOf="@+id/btnThree" />
 
         <TextView
             android:id="@+id/btnSelector"
+            style="@style/ButtonText"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:background="@drawable/selectable_round"
-            android:gravity="center"
-            android:textSize="15sp" />
+            android:layout_centerVertical="true"
+            android:textColor="#c444" />
     </RelativeLayout>
 
     <ListView

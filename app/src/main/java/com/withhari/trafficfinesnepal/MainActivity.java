@@ -8,6 +8,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.LayoutAnimationController;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -25,6 +29,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     int x = 0;
     private TextView btnSelect;
+    private int moved = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +76,14 @@ public class MainActivity extends Activity implements View.OnClickListener {
         } else {
             btnSelect.setBackgroundDrawable(gdb);
         }
+        AnimationSet set = new AnimationSet(true);
+        Animation animation = new AlphaAnimation(0.0f, 1.0f);
+        animation.setDuration(300);
+        set.addAnimation(animation);
+        LayoutAnimationController controller = new LayoutAnimationController(
+                set, 0.5f);
+
+        mListView.setLayoutAnimation(controller);
 
         showList("500.json");
         btnSelect.setText(btnOne.getText());
@@ -99,6 +112,14 @@ public class MainActivity extends Activity implements View.OnClickListener {
             ListView mListView = (ListView) findViewById(R.id.list);
             TextView mTitle = (TextView) findViewById(R.id.page_title);
             mTitle.setText(item.getString("title"));
+            AnimationSet set = new AnimationSet(true);
+            Animation animation = new AlphaAnimation(0.0f, 1.0f);
+            animation.setDuration(300);
+            set.addAnimation(animation);
+            LayoutAnimationController controller = new LayoutAnimationController(
+                    set, 0.5f);
+
+            mListView.setLayoutAnimation(controller);
             mListView.setAdapter(new TextAdapter(this, item.getJSONArray("values")));
         } catch (JSONException e) {
             e.printStackTrace();
@@ -107,14 +128,17 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     private void select(int i, final View btn) {
         final RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) btnSelect.getLayoutParams();
-        final int FinalPos = i * params.width;
+        final int real = params.width;
+        final int FinalPos = i * real;
         if (FinalPos == x) {
             return;
         }
-        final Timer t = new Timer();
+        moved = 0;
+        final Timer t75 = new Timer();
         btnSelect.setText("");
         final boolean up = (FinalPos > x);
-        t.scheduleAtFixedRate(new TimerTask() {
+        final double distance = Math.abs(FinalPos - x);
+        t75.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
                 if (up) {
@@ -122,28 +146,39 @@ public class MainActivity extends Activity implements View.OnClickListener {
                         x++;
                     } else {
                         x = FinalPos;
-                        t.cancel();
+                        t75.cancel();
                     }
                 } else {
                     if (x > FinalPos) {
                         x--;
                     } else {
                         x = FinalPos;
-                        t.cancel();
+                        t75.cancel();
                     }
+                }
+                if (x % 5 == 0) {
+                    if (moved < distance && params.width > 5) {
+                        params.width--;
+                        params.height--;
+                    } else {
+                        params.width++;
+                        params.height++;
+                    }
+                    moved++;
                 }
                 params.setMargins(x, 0, 0, 0);
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         if (FinalPos == x) {
+                            params.width = params.height = real;
                             btnSelect.setText(((TextView) btn).getText());
                         }
                         btnSelect.setLayoutParams(params);
                     }
                 });
             }
-        }, 0, 1);
+        }, 0, 2);
     }
 
     @Override
