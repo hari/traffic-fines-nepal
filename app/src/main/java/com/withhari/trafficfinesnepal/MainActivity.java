@@ -137,7 +137,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         final Timer t75 = new Timer();
         btnSelect.setText("");
         final boolean up = (FinalPos > x);
-        final double distance = Math.abs(FinalPos - x);
+        final double distance = Math.abs(FinalPos - x) / 2;
         t75.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
@@ -156,7 +156,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                         t75.cancel();
                     }
                 }
-                if (x % 5 == 0) {
+                if (x % 4 == 0) {
                     if (moved < distance && params.width > 5) {
                         params.width--;
                         params.height--;
