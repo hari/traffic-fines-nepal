@@ -7,20 +7,26 @@
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="144dp"
+        android:layout_height="168dp"
         android:contentDescription="@string/banner"
         android:scaleType="centerCrop"
         android:src="@drawable/img_traffic" />
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/titleBar"
         android:layout_width="match_parent"
-        android:layout_height="144dp"
+        android:layout_height="168dp"
         android:background="#bb373369"
-        android:orientation="vertical"
         android:padding="16dp">
 
-    </LinearLayout>
+        <TextView
+            android:id="@+id/page_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/buttonContainer"
@@ -37,25 +43,55 @@
             android:id="@+id/btnOne"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:background="@drawable/smooth_round" />
+            android:background="@drawable/selectable_round"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/btnTwo"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:background="@drawable/smooth_round" />
+            android:layout_toEndOf="@+id/btnOne"
+            android:layout_toRightOf="@+id/btnOne"
+            android:background="@drawable/selectable_round"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/btnThree"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:background="@drawable/smooth_round" />
+            android:layout_toEndOf="@+id/btnTwo"
+            android:layout_toRightOf="@+id/btnTwo"
+            android:background="@drawable/selectable_round"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/btnFour"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:background="@drawable/smooth_round" />
+            android:layout_toEndOf="@+id/btnThree"
+            android:layout_toRightOf="@+id/btnThree"
+            android:background="@drawable/selectable_round"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/btnSelector"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="#cfff"
+            android:gravity="center"
+            android:textSize="12sp" />
     </RelativeLayout>
 
     <ListView
@@ -63,5 +99,5 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/buttonContainer"
-        android:padding="16dp" />
+        android:layout_marginTop="16dp" />
 </RelativeLayout>

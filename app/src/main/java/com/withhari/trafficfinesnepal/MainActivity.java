@@ -1,10 +1,15 @@
 package com.withhari.trafficfinesnepal;
 
 import android.app.Activity;
+import android.graphics.Color;
+import android.graphics.Typeface;
+import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.withhari.trafficfinesnepal.extras.Helper;
@@ -13,7 +18,13 @@ import com.withhari.trafficfinesnepal.extras.TextAdapter;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class MainActivity extends Activity implements View.OnClickListener {
+
+    int x = 0;
+    private TextView btnSelect;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +33,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
         ListView mListView = (ListView) findViewById(R.id.list);
         mListView.setDivider(null);
 
+        TextView mTitle = (TextView) findViewById(R.id.page_title);
+        mTitle.setTypeface(Typeface.createFromAsset(getAssets(), "pretti.TTF"));
+
         TextView btnOne, btnTwo, btnThree, btnFour;
+
         btnOne = (TextView) findViewById(R.id.btnOne);
         btnTwo = (TextView) findViewById(R.id.btnTwo);
         btnThree = (TextView) findViewById(R.id.btnThree);
@@ -33,39 +48,101 @@ public class MainActivity extends Activity implements View.OnClickListener {
         btnFour.setOnClickListener(this);
         btnThree.setOnClickListener(this);
 
-        btnOne.setText(Html.fromHtml("<small>Rs</small><br /><b>500</b>"));
-        btnTwo.setText(Html.fromHtml("<small>Rs</small><br /><b>1000</b>"));
-        btnThree.setText(Html.fromHtml("<small>Rs</small><br /><b>1500</b>"));
-        btnFour.setText(Html.fromHtml("<small>+</small><br /><b>Other</b>"));
+        btnOne.setText(Html.fromHtml("<small>Rs</small><br />500"));
+        btnTwo.setText(Html.fromHtml("<small>Rs</small><br />1000"));
+        btnThree.setText(Html.fromHtml("<small>Rs</small><br />1500"));
+        btnFour.setText(Html.fromHtml("+"));
+
+        btnSelect = (TextView) findViewById(R.id.btnSelector);
+
+        GradientDrawable gdb = new GradientDrawable();
+        gdb.setCornerRadius(72);
+        gdb.setColor(Color.argb(200, 255, 255, 255));
+        if (Build.VERSION.SDK_INT >= 16) {
+            btnSelect.setBackground(gdb);
+        } else {
+            btnSelect.setBackgroundDrawable(gdb);
+        }
 
         showList("500.json");
+        btnSelect.setText(btnOne.getText());
+        select(0, btnOne);
     }
 
     private void showList(String name) {
         try {
             JSONObject item = new JSONObject(Helper.loadData(this, name));
             ListView mListView = (ListView) findViewById(R.id.list);
+            TextView mTitle = (TextView) findViewById(R.id.page_title);
+            mTitle.setText(item.getString("title"));
             mListView.setAdapter(new TextAdapter(this, item.getJSONArray("values")));
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
+    private void select(int i, final View btn) {
+        final RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) btnSelect.getLayoutParams();
+        final int FinalPos = i * params.width;
+        if (FinalPos == x) {
+            return;
+        }
+        final Timer t = new Timer();
+        btnSelect.setText("");
+        final boolean up = (FinalPos > x);
+        t.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                if (up) {
+                    if (x < FinalPos) {
+                        x++;
+                    } else {
+                        x = FinalPos;
+                        t.cancel();
+                    }
+                } else {
+                    if (x > FinalPos) {
+                        x--;
+                    } else {
+                        x = FinalPos;
+                        t.cancel();
+                    }
+                }
+                params.setMargins(x, 0, 0, 0);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (FinalPos == x) {
+                            btnSelect.setText(((TextView) btn).getText());
+                        }
+                        btnSelect.setLayoutParams(params);
+                    }
+                });
+            }
+        }, 0, 1);
+    }
+
     @Override
     public void onClick(View v) {
+        int i = 0;
         switch (v.getId()) {
             case R.id.btnOne:
+                i = 0;
                 showList("500.json");
                 break;
             case R.id.btnTwo:
+                i = 1;
                 showList("1000.json");
                 break;
             case R.id.btnThree:
+                i = 2;
                 showList("1500.json");
                 break;
             case R.id.btnFour:
+                i = 3;
                 showList("other.json");
                 break;
         }
+        select(i, v);
     }
 }
