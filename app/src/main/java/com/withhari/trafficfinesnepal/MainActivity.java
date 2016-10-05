@@ -28,6 +28,7 @@ import java.util.TimerTask;
 public class MainActivity extends Activity implements View.OnClickListener {
 
     int x = 0;
+    boolean isWorking = false;
     private TextView btnSelect;
     private int moved = 0;
 
@@ -127,6 +128,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
     }
 
     private void select(int i, final View btn) {
+        if (isWorking) return;
+        isWorking = true;
         final RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) btnSelect.getLayoutParams();
         final int real = params.width;
         final int FinalPos = i * real;
@@ -173,6 +176,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                         if (FinalPos == x) {
                             params.width = params.height = real;
                             btnSelect.setText(((TextView) btn).getText());
+                            isWorking = false;
                         }
                         btnSelect.setLayoutParams(params);
                     }
