@@ -11,11 +11,14 @@ import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
+import android.view.animation.DecelerateInterpolator;
 import android.view.animation.LayoutAnimationController;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.withhari.trafficfinesnepal.extras.Helper;
 import com.withhari.trafficfinesnepal.extras.TextAdapter;
 
@@ -36,6 +39,13 @@ public class MainActivity extends Activity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        if (Helper.isConnected(this)) {
+            AdView mAdView = (AdView) findViewById(R.id.adView);
+            AdRequest adRequest = new AdRequest.Builder().build();
+            assert mAdView != null;
+            mAdView.loadAd(adRequest);
+            mAdView.setVisibility(View.VISIBLE);
+        }
         ListView mListView = (ListView) findViewById(R.id.list);
         mListView.setDivider(null);
 
@@ -126,63 +136,21 @@ public class MainActivity extends Activity implements View.OnClickListener {
             e.printStackTrace();
         }
     }
-
+    int lastPosition = 0;
     private void select(int i, final View btn) {
-        if (isWorking) return;
-        isWorking = true;
+        if (lastPosition == i) return;
         final RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) btnSelect.getLayoutParams();
         final int real = params.width;
         final int FinalPos = i * real;
-        if (FinalPos == x) {
-            return;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1) {
+            btnSelect.animate()
+                    .setInterpolator(new DecelerateInterpolator())
+                    .x(FinalPos);
+        } else {
+            btnSelect.setX(FinalPos);
         }
-        moved = 0;
-        final Timer t75 = new Timer();
-        btnSelect.setText("");
-        final boolean up = (FinalPos > x);
-        final double distance = Math.abs(FinalPos - x) / 2;
-        t75.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                if (up) {
-                    if (x < FinalPos) {
-                        x++;
-                    } else {
-                        x = FinalPos;
-                        t75.cancel();
-                    }
-                } else {
-                    if (x > FinalPos) {
-                        x--;
-                    } else {
-                        x = FinalPos;
-                        t75.cancel();
-                    }
-                }
-                if (x % 4 == 0) {
-                    if (moved < distance && params.width > 5) {
-                        params.width--;
-                        params.height--;
-                    } else {
-                        params.width++;
-                        params.height++;
-                    }
-                    moved++;
-                }
-                params.setMargins(x, 0, 0, 0);
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (FinalPos == x) {
-                            params.width = params.height = real;
-                            btnSelect.setText(((TextView) btn).getText());
-                            isWorking = false;
-                        }
-                        btnSelect.setLayoutParams(params);
-                    }
-                });
-            }
-        }, 0, 2);
+        btnSelect.setText(((TextView)btn).getText());
+        lastPosition = i;
     }
 
     @Override
